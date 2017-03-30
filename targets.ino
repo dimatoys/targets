@@ -27,18 +27,23 @@ class TTarget {
       Motor.ReleasePower();
     }
 
-    bool NeedToLift() {
-    	auto isDropped = Sensor.IsOn();
-    	if (isDropped) {
-    		if (DropTimeMs == 0) {
+    bool IsDropped() {
+    	if (Sensor.IsOn()) {
+    		if (DropTimeMs == 0 ) {
     			// just dropped
     			DropTimeMs = millis();
-    		} else {
-    			return millis() - DropTimeMs > MinDropTimeMs;
     		}
+    		return true;
     	} else {
-    		// Reset drop time
+    		// set it here, because target can be lifted manually
     		DropTimeMs = 0;
+    	}
+    	return false;
+    }
+
+    bool NeedToLift() {
+    	if (IsDropped()) {
+    		return millis() - DropTimeMs > MinDropTimeMs;
     	}
     	return false;
     }
