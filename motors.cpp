@@ -4,11 +4,25 @@
  *      Author: Dmitry Ryashchentsev
  */
 
-#include "motors.h"
+#include "motorsImp.h"
+
+static TPositionMotor* TPositionMotor::NewStepperMotor(unsigned int pinA1,
+    		                                           unsigned int pinB1,
+						                               unsigned int pinA2,
+						                               unsigned int pinB2,
+						                               unsigned long delayMs) {
+
+	return new TStepper(pinA1, pinB1, pinA2, pinB2, delayMs);
+}
+
+static TPositionMotor* NewServoMotor(unsigned int pin,
+		                             unsigned long delayMs) {
+	return new TServo(pin, delayMs);
+}
 
 void TStepper::WritePosition() {
     auto state = States[(Position % 4 + 4) % 4];
-    while(millis() - LastMoveMs < Delay);
+    while(millis() - LastMoveMs < DelayMs);
     digitalWrite(PinA1, state[0]);
     digitalWrite(PinB1, state[1]);
     digitalWrite(PinA2, state[2]);
@@ -39,7 +53,7 @@ void TServo::MoveTo(int position) {
 
     while(millis() < CompleteTimeMs);
     ServoAccess.write(position);
-    CompleteTimeMs = millis() + abs(TargetPosition - position) * Delay;
+    CompleteTimeMs = millis() + abs(TargetPosition - position) * DelayMs;
     TargetPosition = position;
 }
 
