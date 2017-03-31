@@ -4,9 +4,11 @@
  *      Author: Dmitry ryashchentsev
  */
 
+#include "sensors.h"
+
 #include <Arduino.h>
 
-class TReedSwitchSensor : TSensor {
+class TReedSwitchSensor : public TSensor {
     uint8_t Pin;
   public:
     TReedSwitchSensor(uint8_t pin) {
@@ -19,6 +21,6 @@ class TReedSwitchSensor : TSensor {
     }
 };
 
-static TSensor* TSensor::NewReedSwitchSensor(unsigned int pin) {
+TSensor* TSensor::NewReedSwitchSensor(unsigned int pin) {
 	return new TReedSwitchSensor(pin);
 }

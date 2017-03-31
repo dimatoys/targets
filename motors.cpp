@@ -6,7 +6,7 @@
 
 #include "motorsImp.h"
 
-static TPositionMotor* TPositionMotor::NewStepperMotor(unsigned int pinA1,
+TPositionMotor* TPositionMotor::NewStepperMotor(unsigned int pinA1,
     		                                           unsigned int pinB1,
 						                               unsigned int pinA2,
 						                               unsigned int pinB2,
@@ -15,8 +15,8 @@ static TPositionMotor* TPositionMotor::NewStepperMotor(unsigned int pinA1,
 	return new TStepper(pinA1, pinB1, pinA2, pinB2, delayMs);
 }
 
-static TPositionMotor* NewServoMotor(unsigned int pin,
-		                             unsigned long delayMs) {
+TPositionMotor* TPositionMotor::NewServoMotor(unsigned int pin,
+		                                          unsigned long delayMs) {
 	return new TServo(pin, delayMs);
 }
 
