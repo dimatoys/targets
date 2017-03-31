@@ -60,7 +60,7 @@ class TStatistics {
 public:
 
 	void Reset();
-	void Update(unsigned int numStanding);
+	void UpdateState(unsigned int numStanding);
 };
 
 void TStatistics::Reset() {
@@ -68,7 +68,7 @@ void TStatistics::Reset() {
 	LastPullingTime = millis();
 }
 
-void TStatistics::Update(unsigned int numStanding) {
+void TStatistics::UpdateState(unsigned int numStanding) {
 	unsigned long pullingTimeMs = millis();
 	StandTimes[numStanding] += pullingTimeMs - LastPullingTime;
 	LastPullingTime = pullingTimeMs;
@@ -183,7 +183,7 @@ void TPuller::Pull() {
 			++numStandingTargets;
 		}
     }
-	standingStatistics.Update(numStandingTargets);
+	standingStatistics.UpdateState(numStandingTargets);
 }
 
 TTarget* lift[MAX_TARGETS];
