@@ -7,10 +7,10 @@
 #include "motorsImp.h"
 
 TPositionMotor* TPositionMotor::NewStepperMotor(unsigned int pinA1,
-    		                                           unsigned int pinB1,
-						                               unsigned int pinA2,
-						                               unsigned int pinB2,
-						                               unsigned long delayMs) {
+    		                                    unsigned int pinB1,
+						                        unsigned int pinA2,
+						                        unsigned int pinB2,
+						                        unsigned long delayMs) {
 
 	return new TStepper(pinA1, pinB1, pinA2, pinB2, delayMs);
 }
@@ -22,7 +22,7 @@ TPositionMotor* TPositionMotor::NewServoMotor(unsigned int pin,
 
 void TStepper::WritePosition() {
     auto state = States[(Position % 4 + 4) % 4];
-    while(millis() - LastMoveMs < DelayMs);
+    TPuller::SleepBy(LastMoveMs + DelayMs);
     digitalWrite(PinA1, state[0]);
     digitalWrite(PinB1, state[1]);
     digitalWrite(PinA2, state[2]);
@@ -51,7 +51,7 @@ void TServo::MoveTo(int position) {
       ServoAccess.attach(Pin);
     }
 
-    while(millis() < CompleteTimeMs);
+    TPuller::SleepBy(CompleteTimeMs);
     ServoAccess.write(position);
     CompleteTimeMs = millis() + abs(TargetPosition - position) * DelayMs;
     TargetPosition = position;
@@ -59,7 +59,7 @@ void TServo::MoveTo(int position) {
 
 void TServo::ReleasePower() {
     if (ServoAccess.attached()) {
-      while(millis() < CompleteTimeMs);
-      ServoAccess.detach();
+    	TPuller::SleepBy(CompleteTimeMs);
+    	ServoAccess.detach();
     }
 }

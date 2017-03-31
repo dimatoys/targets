@@ -7,6 +7,8 @@
 #ifndef MOTORS_H_
 #define MOTORS_H_
 
+#include "sensors.h"
+
 class TPositionMotor {
   public:
     virtual void MoveTo(int position);

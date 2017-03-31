@@ -8,6 +8,25 @@
 
 #include <Arduino.h>
 
+/*
+static TPuller* SingletonePuller = NULL;
+
+TPuller* TPuller::Instance() {
+	if (SingletonePuller == NULL) {
+		SingletonePuller = new TPuller();
+	}
+	return SingletonePuller;
+}
+
+*/
+
+void TPuller::SleepBy(unsigned long timeMs) {
+	// don't care about overflow since the overflow loop is ~49 days
+	while(millis() < timeMs) {
+		Pull();
+	}
+}
+
 class TReedSwitchSensor : public TSensor {
     uint8_t Pin;
   public:
